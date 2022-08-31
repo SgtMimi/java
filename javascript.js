@@ -1,6 +1,6 @@
 class Tarea {
-    constructor( nombre , categoria , descripcion ) {
-        
+    
+    constructor(nombre, categoria, descripcion) {
         this.nombre = nombre
         this.categoria = categoria
         this.descripcion = descripcion
@@ -25,18 +25,38 @@ const divTareas = document.getElementById("divTareas")
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
+    const datForm = new FormData(e.target)
 
-    const datForm=new FormData(e.target)
-    console.log (datForm.get("nombre") , datForm.get("categoria"), datForm .
-    get("descripcion"))
+    const tarea = new Tarea(datForm.get("nombre"), datForm.get("categoria"), datForm.get("descripcion"))
     
-    const nombre = document.getElementById("idNombre").value
-    
-    const categoria = document.getElementById("idCategoria").value
-    
-    const descripcion = document.getElementById("idDescripcion").value
+    tareas.push(Tarea)
 
-    console.log(nombre, categoria, descripcion)
+    localStorage.setItem('tareas', JSON.stringify(tareas))
+
+    form.reset()
+
+
+})
+
+botonTareas.addEventListener('click', () => {
+    const tarStorage = JSON.parse(localStorage.getItem('tareas'))
+
+    divTareas.innerHTML = ""
+    tarStorage.forEach((tarea, indice) => {
+        divTareas.innerHTML += `
+            <div class="card bg-light mb-3" id="tarea${indice}" style="max-width: 20rem;margin:8px;">
+                <div class="card-header"><h2>${tarea.nombre}<h2></div>
+                <div class="card-body">
+                    <p class="card-title">${tarea.categoria}</p>
+                    <p class="card-text">${tarea.descripcion}</p>
+                    <button class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        
+        `
+    })
+
+
 })
 
     
